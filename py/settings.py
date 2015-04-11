@@ -1,0 +1,2 @@
+def DISPLAY():
+	return False
