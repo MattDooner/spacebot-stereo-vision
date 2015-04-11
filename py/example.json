@@ -1,0 +1,26 @@
+{
+	"dataMinDisparity":{"x":0.1,"y":0.1},
+	"dataMaxDisparity":{"x":0.1,"y":0.1},
+	"dataMinMatchDistance":{"x":0.1,"y":0.1},
+	"dataMaxMatchDistance":{"x":0.1,"y":0.1},
+	"data":[
+		{
+			"frame":0,
+			"timestamp":0.0,
+			"numMatches":5,
+			"totalMatches":5,
+			"minDisparity":{"x":0.1,"y":0.1},
+			"maxDisparity":{"x":0.1,"y":0.1},
+			"minMatchDistance":{"x":0.1,"y":0.1},
+			"maxMatchDistance":{"x":0.1,"y":0.1},
+			"matches":[
+				{
+					"leftKp":{"x":1,"y":1},
+					"rightKp":{"x":1,"y":1},
+					"disparity":{"x":0.1,"y":0.1},
+					"matchDistance":0.1
+				}
+			]
+		}
+	]
+}
