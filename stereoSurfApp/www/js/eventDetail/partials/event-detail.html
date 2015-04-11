@@ -11,7 +11,7 @@
             <div class="row">
 
                 <div class="col-66">
-                    <videogular vg-player-ready="onPlayerReady($API)"  class="video-container" vg-theme="config.theme">
+                    <videogular vg-player-ready="onPlayerReady($API)" class="video-container" vg-theme="config.theme">
                         <vg-media vg-src="config.sources"
                                   vg-tracks="config.tracks">
                         </vg-media>
@@ -35,27 +35,36 @@
 
                     <div class="video-timer">
 
-                        <i class="icon ion-ios-timer-outline"><h4>{{videoApi.currentTime | date:'mm:ss'}} / {{videoApi.totalTime | date:'mm:ss'}}</h4></i>
+                        <i class="icon ion-ios-timer-outline"><h4>{{videoApi.currentTime | date:'mm:ss'}} /
+                            {{videoApi.totalTime | date:'mm:ss'}}</h4></i>
 
 
                     </div>
                     <div class="list card list-inset">
                         <a class="item item-icon-left item-icon-right" ng-click="toggleAnalyseMode()">
-                            <i class="icon ion-ios-eye" ng-if="!detailState.isAnalyseMode"></i>
-                            <i class="icon ion-arrow-return-right" ng-if="detailState.isAnalyseMode"></i>
-                            <div ng-if="detailState.isAnalyseMode">Resume</div>
-                            <div ng-if="!detailState.isAnalyseMode">Analyse</div>
+                            <i class="icon ion-ios-play" ng-if="videoApi.currentState ==='stop'"></i>
+                            <i class="icon ion-ios-eye" ng-if="videoApi.currentState ==='play'"></i>
+                            <i class="icon ion-arrow-return-right" ng-if="videoApi.currentState ==='pause'"></i>
+
+                            <div ng-if="videoApi.currentState ==='stop'">Begin</div>
+                            <div ng-if="videoApi.currentState ==='pause'">Resume</div>
+                            <div ng-if="videoApi.currentState ==='play'">Analyse</div>
                             <i ng-if="detailState.isAnalyseMode" class="icon ion-chevron-right icon-accessory"></i>
-                            <ion-spinner ng-if="!detailState.isAnalyseMode"  class="icon" icon="ripple"></ion-spinner>
+                            <ion-spinner ng-if="!detailState.isAnalyseMode" class="icon" icon="ripple"></ion-spinner>
 
 
                         </a>
 
-                        <div  class="item item-icon-left item-icon-right time-stepper" ng-class="{'disabled-overlay': videoApi.currentState ==='play'}">
+                        <div class="item item-icon-left item-icon-right time-stepper"
+                             ng-class="{'disabled-overlay': videoApi.currentState ==='play'}">
 
-                            <a ng-disabled="videoApi.currentState ==='play'" class="button button-icon icon ion-ios-rewind"></a>
+                            <a ng-disabled="videoApi.currentState ==='play'"
+                               class="button button-icon icon ion-ios-rewind"
+                               ng-click="decrementVideoByOne()"></a>
                             +/- 1 Second
-                            <a ng-disabled="videoApi.currentState ==='play'" class="button button-icon icon ion-ios-fastforward"></a>
+                            <a ng-disabled="videoApi.currentState ==='play'"
+                               class="button button-icon icon ion-ios-fastforward"
+                               ng-click="incrementVideoByOne()"></a>
 
                         </div>
                     </div>
@@ -88,14 +97,17 @@
 
         </div>
 
+
         <!--<div class="button" ui-sref="app.event-detail({eventId:1})">State Change</div>-->
-        <div class="row row-center">
+        <div class="row row-center" ng-show="videoApi.currentState ==='pause'">
 
             <div class="col col-50 col-offset-25">
                 <div class="button-bar">
                     <!--<a class="button button-small" ui-sref="app.event-drilldown({eventId:1})">Quality</a>-->
-                    <a ng-class="{'button-positive': detailState.currentTab ==='quality'}" ng-click="activateDetailView('quality')" class="button button-small">Quality</a>
-                    <a ng-class="{'button-positive': detailState.currentTab ==='features'}" ng-click="activateDetailView('features')" class="button button-small">Features</a>
+                    <a ng-class="{'button-positive': detailState.currentTab ==='quality'}"
+                       ng-click="activateDetailView('quality')" class="button button-small">Quality</a>
+                    <a ng-class="{'button-positive': detailState.currentTab ==='features'}"
+                       ng-click="activateDetailView('features')" class="button button-small">Features</a>
                     <a ng-disabled="true" class="button button-small">3d</a>
                 </div>
             </div>
@@ -105,33 +117,35 @@
 
     </ion-content>
 
-    <div ng-show="detailState.currentTab==='features'" class="row">
+    <div ng-show="videoApi.currentState ==='pause'">
 
-        <div class="col">
-            <ion-content class="below" scroll="true" has-bouncing="true">
+        <div ng-show="detailState.currentTab==='features'" class="row">
 
-                <div class="row">
+            <div class="col">
+                <ion-content class="below" scroll="true" has-bouncing="true">
 
-                    <div class="col">
+                    <div class="row">
 
-                        <div class="list">
-                            <a ui-sref="app.event-drilldown({eventId:1})"
-                                    class="item item-avatar item-icon-left item-icon-right"
-                               ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
-                                <i class="icon ion-ios-checkmark-empty"></i>
+                        <div class="col">
 
-                                <h2>Feature {{item}}</h2>
+                            <div class="list">
+                                <a ui-sref="app.event-drilldown({eventId:1})"
+                                   class="item item-avatar item-icon-left item-icon-right"
+                                   ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+                                    <i class="icon ion-ios-checkmark-empty"></i>
 
-                                <p>Feature metadata</p>
-                                <i class="icon ion-chevron-right icon-accessory"></i>
+                                    <h2>Feature {{item}}</h2>
 
-                            </a>
+                                    <p>Feature metadata</p>
+                                    <i class="icon ion-chevron-right icon-accessory"></i>
 
+                                </a>
+
+                            </div>
                         </div>
-                    </div>
-                    <!--<div class="col-50">-->
+                        <!--<div class="col-50">-->
                         <!--<ion-scroll direction="xy" zooming="true" has-bouncing="true">-->
-                            <!--<img ng-src="../img/keyframe.png">-->
+                        <!--<img ng-src="../img/keyframe.png">-->
                         <!--</ion-scroll>-->
 
                         <!--&lt;!&ndash;<ion-scroll zooming="true" min-zoom="0.5" direction="xy" style="width: 500px; height: 500px">&ndash;&gt;-->
@@ -139,36 +153,36 @@
                         <!--&lt;!&ndash;</ion-scroll>&ndash;&gt;-->
 
 
-                    <!--</div>-->
-                </div>
+                        <!--</div>-->
+                    </div>
 
-            </ion-content>
+                </ion-content>
 
 
+            </div>
+            <div class="col">
+
+
+            </div>
         </div>
-        <div class="col">
-
-
-        </div>
-    </div>
-    <div ng-show="detailState.currentTab==='quality'">
+        <div ng-show="detailState.currentTab==='quality'">
 
             <ion-content class="below padding" scroll="false" has-bouncing="true">
 
                 <!--<div class="row">-->
 
-                    <!--<div class="col-80 col-offset-10">-->
+                <!--<div class="col-80 col-offset-10">-->
 
-                        <nvd3-scatter-chart
-                                class="quality-chart"
-                                data="exampleData"
-                                id="interactiveExample"
-                               height="300"
-                                interactive="true"
-                                tooltips="true">
-                            <svg></svg>
-                        </nvd3-scatter-chart>
-                    <!--</div>-->
+                <nvd3-scatter-chart
+                        class="quality-chart"
+                        data="exampleData"
+                        id="interactiveExample"
+                        height="300"
+                        interactive="true"
+                        tooltips="true">
+                    <svg></svg>
+                </nvd3-scatter-chart>
+                <!--</div>-->
 
 
                 <!--</div>-->
@@ -177,8 +191,16 @@
             </ion-content>
 
 
+        </div>
+    </div>
+
+    <div class="pending-analysis">
+        <ion-spinner ng-if="!detailState.isAnalyseMode" class="icon" icon="ios">
+        </ion-spinner>
 
     </div>
+    <h2 class="pending-message" ng-if="!detailState.isAnalyseMode">Awaiting Analysis Pause...</h2>
+
 
 
 </ion-view>

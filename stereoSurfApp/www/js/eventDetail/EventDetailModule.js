@@ -30,6 +30,8 @@ angular.module('stereoSurf.eventDetail', [])
         $scope.toggleAnalyseMode = toggleAnalyseMode;
         $scope.onPlayerReady = onPlayerReady;
         $scope.playVideo = playVideo;
+        $scope.incrementVideoByOne = incrementVideoByOne;
+        $scope.decrementVideoByOne = decrementVideoByOne;
 
 
         $scope.exampleData = [
@@ -226,6 +228,21 @@ angular.module('stereoSurf.eventDetail', [])
                 //resume playback
                 playVideo();
             }
+
+        }
+
+        function incrementVideoByOne(){
+
+
+            var currentTime = $scope.videoApi.currentTime /1000;
+            $scope.videoApi.seekTime(currentTime+1,false);
+        }
+
+        function decrementVideoByOne(){
+
+
+            var currentTime = $scope.videoApi.currentTime /1000;
+            $scope.videoApi.seekTime(currentTime-1,false);
 
         }
 

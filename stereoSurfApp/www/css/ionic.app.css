@@ -4018,3 +4018,19 @@ progress {
   /* Safari, Opera */
   -moz-opacity: 0.30;
   /* FireFox */ }
+
+.pending-analysis {
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto; }
+
+.pending-message {
+  width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto; }
+
+.pending-analysis .spinner svg {
+  margin-top: 480px;
+  width: 75px;
+  height: 75px; }
