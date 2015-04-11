@@ -14,8 +14,13 @@ class ColorMap:
         self.endcolor = np.array(endcolor)
         self.startmap = float(startmap)
         self.endmap = float(endmap)
-        self.valuerange = float(endmap - startmap)
+        if abs(self.startmap - self.endmap) < 0.00001:
+            self.endmap = self.endmap + 1
+        self.valuerange = float(self.endmap - self.startmap)
         self.ratios = (self.endcolor - self.startcolor) / self.valuerange
+        print '#### colors ###'
+        print self.valuerange
+        print self.ratios
 
     def __getitem__(self, value):
         color = tuple(self.startcolor + (self.ratios * (value - self.startmap)))

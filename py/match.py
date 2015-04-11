@@ -69,16 +69,17 @@ def drawDisparity(img1, kp1, img2, kp2, disparities):
     out[:rows2,cols1:cols1+cols2,:] = np.dstack([img2, img2, img2])
 
     oldSize = len(disparities)
-    disparities = filter(lambda disp: disp['disp'] > 150, disparities)
-    disparities = filter(lambda disp: disp['disp'] < 160, disparities)
-    print 'filtered ' + str(oldSize - len(disparities))
+    disparities = filter(lambda disp: disp['disp'] > 140, disparities)
+    disparities = filter(lambda disp: disp['disp'] < 170, disparities)
+    disparities = filter(lambda disp: abs(disp['dy']) < 1, disparities)
+    disparities = filter(lambda disp: abs(disp['dy']) > -1, disparities)
+    print 'filtered %d of %d' % (oldSize - len(disparities), oldSize)
 
     if len(disparities) == 0:
     	return out
 
     minDisp, maxDisp = minMaxDisp(disparities)
-    print 'min: ' + str(minDisp['disp'])
-    print 'max: ' + str(maxDisp['disp'])
+    print 'min: %.2f max: %.2f' % (minDisp['disp'], maxDisp['disp'])
 
     colormap = cm.ColorMap((0,255,0),(0,0,255),minDisp['disp'],maxDisp['disp'])
 
@@ -88,6 +89,8 @@ def drawDisparity(img1, kp1, img2, kp2, disparities):
 
     	mat = disparty['match']
     	d = disparty['disp']
+    	dx = disparty['dx']
+    	dy = disparty['dy']
 
         # Get the matching keypoints for each of the images
         img1_idx = mat.queryIdx
@@ -102,9 +105,9 @@ def drawDisparity(img1, kp1, img2, kp2, disparities):
         # radius 4
         # colour blue
         # thickness = 1
+        print 'd: %.2f dx: %.2f dy: %.2f' % (d,dx,dy)
         color = colormap[d]
-        print color
-        cv2.putText(out, str(round(d)), (int(x1),int(y1)), cv2.FONT_HERSHEY_PLAIN, 1, color)
+        cv2.putText(out, str(round(dx)), (int(x1),int(y1)), cv2.FONT_HERSHEY_PLAIN, 1, color)
         #cv2.circle(out, (int(x1),int(y1)), 4, color, 1)   
         cv2.circle(out, (int(x2)+cols1,int(y2)), 4, color, 1)
 
@@ -197,7 +200,9 @@ def disparity(img1, kp1, img2, kp2, matches):
         (x1,y1) = kp1[img1_idx].pt
         (x2,y2) = kp2[img2_idx].pt
 
+        dx = x1-x2
+        dy = y1-y2
         d = math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
-        out[i] = {'disp': d, 'match': mat}
+        out[i] = {'disp': d, 'dx' : dx, 'dy': dy, 'match': mat}
 
     return out
