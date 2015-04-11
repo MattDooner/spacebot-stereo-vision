@@ -89,9 +89,10 @@
 
             <div class="col col-50 col-offset-25">
                 <div class="button-bar">
-                    <a class="button button-small" ui-sref="app.event-detail({eventId:1})">Features</a>
-                    <a class="button button-small">Quality</a>
-                    <a class="button button-small">3d</a>
+                    <!--<a class="button button-small" ui-sref="app.event-detail({eventId:1})">Features</a>-->
+                    <a ng-click="currentView='quality'" class="button button-small">Quality</a>
+                    <a ng-click="currentView='features'" class="button button-small" >Features</a>
+                    <a ng-disabled="true" class="button button-small">3d</a>
                 </div>
             </div>
 
