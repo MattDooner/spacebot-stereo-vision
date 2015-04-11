@@ -12,12 +12,56 @@ $balanced:                        #33cd5f !default;
 $energized:                       #ffc900 !default;
 $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
-$dark:                            #444 !default;
 */
+
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
-// Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
+$dark:                            #546e7a !default;
 
+// Include all of Ionic
+@import "../www/lib/ionic/scss/_mixins";
+
+@import "../www/lib/ionic/scss/ionic";
+
+
+.core-panel{
+
+  background-color: #eceff1;
+}
+
+.video-container{
+
+  height: 300px;
+}
+
+.time-stepper{
+
+  text-align: center;
+
+}
+
+.video-timer{
+
+  text-align: center;
+
+
+}
+
+.video-timer h4{
+
+  display: inline;
+  padding-left: 6px;
+}
+
+.below{
+
+  margin-top: 400px;
+  padding-top: 0;
+}
+
+.below .row{
+
+  padding: 0;
+}

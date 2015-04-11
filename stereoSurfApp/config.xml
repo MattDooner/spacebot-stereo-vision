@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.myapp814951" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>myApp</name>
+  <name>StereoSurf</name>
   <description>
-        An Ionic Framework and Cordova project.
+        SpaceApps 2015 Glasgow
     </description>
   <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+      M+T
     </author>
   <content src="index.html"/>
   <access origin="*"/>

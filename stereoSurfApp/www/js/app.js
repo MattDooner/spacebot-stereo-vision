@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic',
+angular.module('stereoSurf', ['ionic',
     'starter.controllers',
     'ngCordova',
     "com.2fdevs.videogular",
@@ -47,7 +47,7 @@ angular.module('starter', ['ionic',
 
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/event.html",
+                        templateUrl: "templates/event-overview.html",
                         controller: 'AppCtrl'
 
                     }
