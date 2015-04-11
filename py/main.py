@@ -54,8 +54,9 @@ totalMatches = 0
 globalMin = 10000
 globalMax = 0
 
-fourcc = cv2.VideoWriter_fourcc(*'X264')
-outVid = cv2.VideoWriter('data/output.mp4',fourcc,fps,(frameWidth,frameHeight),True)
+fourcc = int(cap.get(cv.CV_CAP_PROP_FOURCC))
+fourcc = cv2.cv.CV_FOURCC(*'DIVX')
+outVid = cv2.VideoWriter('data/output.avi',fourcc,int(fps),(int(frameWidth),int(frameHeight)),True)
 
 while(cap.isOpened()):
     ret, frame = cap.read()
@@ -82,9 +83,9 @@ while(cap.isOpened()):
 
     mobj = utils.Bunch(match)
 
-    img3 = drawDisparity(matchDict)
+    img3 = d.drawDisparity(match)
     img3 = cv2.flip(img3,0)
-    outVid.write(frame)
+    outVid.write(img3)
 
     numMatches = len(mobj.matchDisparities)
     totalMatches = totalMatches + numMatches
@@ -96,9 +97,11 @@ while(cap.isOpened()):
         "totalMatches":totalMatches
     }
 
-    dataItem['matches'] = formatMatchPoints(match)
+    # dataItem['matches'] = formatMatchPoints(match)
 
-    dataItem['matchDistanceStats'] = matchPointStats(dataItem['matches'])
+    matchesTmp = formatMatchPoints(match)
+
+    dataItem['matchDistanceStats'] = matchPointStats(matchesTmp)
     globalMin = min(globalMin, dataItem['matchDistanceStats']['min'])
     globalMax = max(globalMax, dataItem['matchDistanceStats']['max'])
 
