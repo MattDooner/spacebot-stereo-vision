@@ -1,0 +1,184 @@
+<ion-view view-title="Event">
+
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon icon ion-ios-flask-outline"></button>
+    </ion-nav-buttons>
+
+    <ion-content>
+
+        <div class="card core-panel">
+
+            <div class="row">
+
+                <div class="col-66">
+                    <videogular vg-player-ready="onPlayerReady($API)"  class="video-container" vg-theme="config.theme">
+                        <vg-media vg-src="config.sources"
+                                  vg-tracks="config.tracks">
+                        </vg-media>
+
+                        <vg-controls>
+                            <vg-play-pause-button></vg-play-pause-button>
+
+                            <vg-scrub-bar>
+                                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                            </vg-scrub-bar>
+                            <!--<vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>-->
+                            <!--<vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>-->
+
+                            <vg-fullscreen-button></vg-fullscreen-button>
+                        </vg-controls>
+
+                    </videogular>
+
+                </div>
+                <div class="col">
+
+                    <div class="video-timer">
+
+                        <i class="icon ion-ios-timer-outline"><h4>{{videoApi.currentTime | date:'mm:ss'}} / {{videoApi.totalTime | date:'mm:ss'}}</h4></i>
+
+
+                    </div>
+                    <div class="list card list-inset">
+                        <a class="item item-icon-left item-icon-right" ng-click="toggleAnalyseMode()">
+                            <i class="icon ion-ios-eye" ng-if="!detailState.isAnalyseMode"></i>
+                            <i class="icon ion-arrow-return-right" ng-if="detailState.isAnalyseMode"></i>
+                            <div ng-if="detailState.isAnalyseMode">Resume</div>
+                            <div ng-if="!detailState.isAnalyseMode">Analyse</div>
+                            <i ng-if="detailState.isAnalyseMode" class="icon ion-chevron-right icon-accessory"></i>
+                            <ion-spinner ng-if="!detailState.isAnalyseMode"  class="icon" icon="ripple"></ion-spinner>
+
+
+                        </a>
+
+                        <div  class="item item-icon-left item-icon-right time-stepper" ng-class="{'disabled-overlay': videoApi.currentState ==='play'}">
+
+                            <a ng-disabled="videoApi.currentState ==='play'" class="button button-icon icon ion-ios-rewind"></a>
+                            +/- 1 Second
+                            <a ng-disabled="videoApi.currentState ==='play'" class="button button-icon icon ion-ios-fastforward"></a>
+
+                        </div>
+                    </div>
+
+
+                    <!--<div class="list card list-inset">-->
+
+
+                    <!--&lt;!&ndash;<div class="range">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i class="icon ion-volume-low"></i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input type="range" name="volume">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i class="icon ion-volume-high"></i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
+
+                    <div class="list card list-inset">
+
+
+                        <a class="item item-icon-left item-icon-right">
+                            <i class="icon ion-ios-bookmarks"></i>
+                            +Bookmark
+                            <i class="icon ion-chevron-right icon-accessory"></i>
+
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <!--<div class="button" ui-sref="app.event-detail({eventId:1})">State Change</div>-->
+        <div class="row row-center">
+
+            <div class="col col-50 col-offset-25">
+                <div class="button-bar">
+                    <!--<a class="button button-small" ui-sref="app.event-drilldown({eventId:1})">Quality</a>-->
+                    <a ng-class="{'button-positive': detailState.currentTab ==='quality'}" ng-click="activateDetailView('quality')" class="button button-small">Quality</a>
+                    <a ng-class="{'button-positive': detailState.currentTab ==='features'}" ng-click="activateDetailView('features')" class="button button-small">Features</a>
+                    <a ng-disabled="true" class="button button-small">3d</a>
+                </div>
+            </div>
+
+        </div>
+
+
+    </ion-content>
+
+    <div ng-show="detailState.currentTab==='features'" class="row">
+
+        <div class="col">
+            <ion-content class="below" scroll="true" has-bouncing="true">
+
+                <div class="row">
+
+                    <div class="col">
+
+                        <div class="list">
+                            <a ui-sref="app.event-drilldown({eventId:1})"
+                                    class="item item-avatar item-icon-left item-icon-right"
+                               ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+                                <i class="icon ion-ios-checkmark-empty"></i>
+
+                                <h2>Feature {{item}}</h2>
+
+                                <p>Feature metadata</p>
+                                <i class="icon ion-chevron-right icon-accessory"></i>
+
+                            </a>
+
+                        </div>
+                    </div>
+                    <!--<div class="col-50">-->
+                        <!--<ion-scroll direction="xy" zooming="true" has-bouncing="true">-->
+                            <!--<img ng-src="../img/keyframe.png">-->
+                        <!--</ion-scroll>-->
+
+                        <!--&lt;!&ndash;<ion-scroll zooming="true" min-zoom="0.5" direction="xy" style="width: 500px; height: 500px">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div style="width: 5000px; height: 5000px; background: url('https://upload.wikimedia.org/wikipedia/commons/a/ad/Europe_geological_map-en.jpg') repeat"></div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ion-scroll>&ndash;&gt;-->
+
+
+                    <!--</div>-->
+                </div>
+
+            </ion-content>
+
+
+        </div>
+        <div class="col">
+
+
+        </div>
+    </div>
+    <div ng-show="detailState.currentTab==='quality'">
+
+            <ion-content class="below padding" scroll="false" has-bouncing="true">
+
+                <!--<div class="row">-->
+
+                    <!--<div class="col-80 col-offset-10">-->
+
+                        <nvd3-scatter-chart
+                                class="quality-chart"
+                                data="exampleData"
+                                id="interactiveExample"
+                               height="300"
+                                interactive="true"
+                                tooltips="true">
+                            <svg></svg>
+                        </nvd3-scatter-chart>
+                    <!--</div>-->
+
+
+                <!--</div>-->
+
+
+            </ion-content>
+
+
+
+    </div>
+
+
+</ion-view>

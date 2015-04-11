@@ -11,7 +11,9 @@ angular.module('stereoSurf', ['ionic',
     "com.2fdevs.videogular.plugins.controls",
     "com.2fdevs.videogular.plugins.overlayplay",
     "com.2fdevs.videogular.plugins.poster",
-    "ngSanitize"
+    "ngSanitize",
+    "stereoSurf.eventDetail",
+    "nvd3ChartDirectives"
 ])
 
     .run(function ($ionicPlatform,$cordovaStatusbar) {
@@ -54,21 +56,13 @@ angular.module('stereoSurf', ['ionic',
                 }
             })
 
-            .state('app.event', {
-                url: "/event/:eventId",
 
+
+            .state('app.event-drilldown', {
+                url: "/event/:eventId/drilldown",
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/event.html"
-                    }
-                }
-            })
-
-            .state('app.event-detail', {
-                url: "/event/:eventId/detail",
-                views: {
-                    'menuContent': {
-                        templateUrl: "templates/event-detail.html"
+                        templateUrl: "templates/event-drilldown.html"
                     }
                 }
             });

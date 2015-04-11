@@ -4007,3 +4007,14 @@ progress {
 
 .below .row {
   padding: 0; }
+
+.quality-chart {
+  margin-left: auto;
+  margin-right: auto; }
+
+.disabled-overlay {
+  background-color: white;
+  opacity: 0.3;
+  /* Safari, Opera */
+  -moz-opacity: 0.30;
+  /* FireFox */ }
