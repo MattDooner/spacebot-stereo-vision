@@ -38,7 +38,7 @@ def match(left, right) :
     #         break
 
 def doSurf(img) :
-	surf = cv2.SURF(500)
+	surf = cv2.SURF(1000)
 	print surf.descriptorSize()
 	print surf.extended
 	kp, des = surf.detectAndCompute(img,None)
@@ -46,9 +46,11 @@ def doSurf(img) :
 	return kp, des
 
 def minMaxDisp(disparities) :
-	minDisp = min(disparities, key = lambda d : math.fabs(d['disp']))
-	maxDisp = max(disparities, key = lambda d : math.fabs(d['disp']))
-	return minDisp, maxDisp
+	if len(disparities) > 0:
+		minDisp = min(disparities, key = lambda d : math.fabs(d['disp']))
+		maxDisp = max(disparities, key = lambda d : math.fabs(d['disp']))
+		return minDisp, maxDisp
+	return None, None
 
 def drawDisparity(img1, kp1, img2, kp2, disparities):
     # Create a new output image that concatenates the two images together
@@ -65,6 +67,14 @@ def drawDisparity(img1, kp1, img2, kp2, disparities):
 
     # Place the next image to the right of it
     out[:rows2,cols1:cols1+cols2,:] = np.dstack([img2, img2, img2])
+
+    oldSize = len(disparities)
+    disparities = filter(lambda disp: disp['disp'] > 150, disparities)
+    disparities = filter(lambda disp: disp['disp'] < 160, disparities)
+    print 'filtered ' + str(oldSize - len(disparities))
+
+    if len(disparities) == 0:
+    	return out
 
     minDisp, maxDisp = minMaxDisp(disparities)
     print 'min: ' + str(minDisp['disp'])
@@ -93,7 +103,9 @@ def drawDisparity(img1, kp1, img2, kp2, disparities):
         # colour blue
         # thickness = 1
         color = colormap[d]
-        cv2.circle(out, (int(x1),int(y1)), 4, color, 1)   
+        print color
+        cv2.putText(out, str(round(d)), (int(x1),int(y1)), cv2.FONT_HERSHEY_PLAIN, 1, color)
+        #cv2.circle(out, (int(x1),int(y1)), 4, color, 1)   
         cv2.circle(out, (int(x2)+cols1,int(y2)), 4, color, 1)
 
         # Draw a line in between the two points
