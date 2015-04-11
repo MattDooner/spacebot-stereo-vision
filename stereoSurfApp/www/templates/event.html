@@ -1,9 +1,12 @@
 <ion-view view-title="Event">
 
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon icon ion-ios-flask-outline"></button>
+    </ion-nav-buttons>
+
     <ion-content>
 
-
-        <div class="card core-panel">
+             <div class="card core-panel">
 
             <div class="row">
 
@@ -19,8 +22,8 @@
                             <vg-scrub-bar>
                                 <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                             </vg-scrub-bar>
-                            <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
-                            <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                            <!--<vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>-->
+                            <!--<vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>-->
 
                             <vg-fullscreen-button></vg-fullscreen-button>
                         </vg-controls>
@@ -68,7 +71,7 @@
 
 
                         <a class="item item-icon-left item-icon-right">
-                            <i class="icon ion-ios-bookmarks-outline"></i>
+                            <i class="icon ion-ios-bookmarks"></i>
                             +Bookmark
                             <i class="icon ion-chevron-right icon-accessory"></i>
 
@@ -117,7 +120,17 @@
 
                 </div>
             </div>
-            <div class="col-50"></div>
+            <div class="col-50">
+                <ion-scroll direction="xy" zooming="true" has-bouncing="true" >
+                    <img ng-src="../img/keyframe.png">
+                </ion-scroll>
+
+                <!--<ion-scroll zooming="true" min-zoom="0.5" direction="xy" style="width: 500px; height: 500px">-->
+                    <!--<div style="width: 5000px; height: 5000px; background: url('https://upload.wikimedia.org/wikipedia/commons/a/ad/Europe_geological_map-en.jpg') repeat"></div>-->
+                <!--</ion-scroll>-->
+
+
+            </div>
         </div>
 
     </ion-content>
