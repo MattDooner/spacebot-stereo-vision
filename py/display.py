@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 def DISPLAY():
-	return True
+	return False
 
 def displayDisparity(matchDict):
 	if DISPLAY() :
