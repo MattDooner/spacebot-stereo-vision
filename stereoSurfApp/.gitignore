@@ -55,3 +55,8 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#ionic ignores
+node_modules/
+platforms/
+plugins/
