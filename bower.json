@@ -1,0 +1,16 @@
+{
+  "name": "myApp",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-rc.2"
+  },
+  "dependencies": {
+    "ngCordova": "~0.1.14-alpha",
+    "videogular": "~1.1.1",
+    "videogular-themes-default": "~1.1.1",
+    "videogular-controls": "~1.1.1",
+    "videogular-buffering": "~1.1.1",
+    "videogular-overlay-play": "~1.1.1",
+    "videogular-poster": "~1.1.1"
+  }
+}
