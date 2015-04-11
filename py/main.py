@@ -44,13 +44,24 @@ def matchPointStats(mpsFmt) :
 cap = cv2.VideoCapture('data/test4-slam.avi')
 count = 0
 
+total_frames = cap.get(cv.CV_CAP_PROP_FRAME_COUNT)
+fps = cap.get(cv.CV_CAP_PROP_FPS)
+frameWidth = cap.get(cv.CV_CAP_PROP_FRAME_WIDTH)
+frameHeight = cap.get(cv.CV_CAP_PROP_FRAME_HEIGHT)
+
 data = []
 totalMatches = 0
 globalMin = 10000
 globalMax = 0
 
-while(cap.isOpened() and count < 2):
+fourcc = cv2.VideoWriter_fourcc(*'X264')
+outVid = cv2.VideoWriter('data/output.mp4',fourcc,fps,(frameWidth,frameHeight),True)
+
+while(cap.isOpened()):
     ret, frame = cap.read()
+
+    if(not ret):
+        break
 
     pos_frames = cap.get(cv.CV_CAP_PROP_POS_FRAMES)
     pos_msec = cap.get(cv.CV_CAP_PROP_POS_MSEC)
@@ -70,6 +81,10 @@ while(cap.isOpened() and count < 2):
     match = m.match(left,right)
 
     mobj = utils.Bunch(match)
+
+    img3 = drawDisparity(matchDict)
+    img3 = cv2.flip(img3,0)
+    outVid.write(frame)
 
     numMatches = len(mobj.matchDisparities)
     totalMatches = totalMatches + numMatches
@@ -96,7 +111,10 @@ while(cap.isOpened() and count < 2):
         if cv2.waitKey(0) & 0xFF == ord('q'):
             break
 
-    print "Frame %d / %d" % (count,-1)
+    print "Frame %d / %d" % (count,total_frames)
+
+cap.release()
+outVid.release()
 
 out = {'dataMinMatchDistance':globalMin,
     'dataMaxMatchDistance':globalMax}
