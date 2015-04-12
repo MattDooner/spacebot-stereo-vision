@@ -24,6 +24,8 @@ angular.module('stereoSurf.eventDetail', [])
         '$ionicModal',
         '$sce',
         '$stateParams',
+        'EventsService',
+        '$timeout',
         function ($scope, $ionicModal, $sce, $stateParams,EventsService,$timeout) {
 
             // init state
@@ -31,6 +33,7 @@ angular.module('stereoSurf.eventDetail', [])
             var newBookmarkState = {};
 
             $scope.detailState = detailState;
+            $scope.newBookmarkState = newBookmarkState;
             $scope.exampleData = createExampleChartData();
             $scope.videoConfig = createVideoConfig();
             $scope.currentEventId = $stateParams.eventId;
@@ -153,6 +156,7 @@ angular.module('stereoSurf.eventDetail', [])
 
             function setStateFromBookmark() {
 
+                console.log(EventsService);
                 var bookmark = EventsService.getEventById($scope.currentEventId);
 
                 if (bookmark && !bookmark.hidden) {
@@ -163,6 +167,8 @@ angular.module('stereoSurf.eventDetail', [])
                     $timeout(function(){
 
                         $scope.videoApi.pause();
+                        $scope.exampleData = createExampleChartData();
+
 
                     })
 
@@ -210,6 +216,7 @@ angular.module('stereoSurf.eventDetail', [])
 
 
             function onPlayerReady(API) {
+
                 $scope.videoApi = API;
                 
                 // do this after player ready as it needs api access to seek to bookmark
