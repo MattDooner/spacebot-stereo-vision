@@ -5,18 +5,18 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('stereoSurf', ['ionic',
-    'starter.controllers',
+    "stereoSurf.eventDetail",
+    "stereoSurf.eventOverview",
     'ngCordova',
     "com.2fdevs.videogular",
     "com.2fdevs.videogular.plugins.controls",
     "com.2fdevs.videogular.plugins.overlayplay",
     "com.2fdevs.videogular.plugins.poster",
     "ngSanitize",
-    "stereoSurf.eventDetail",
     "nvd3ChartDirectives"
 ])
 
-    .run(function ($ionicPlatform,$cordovaStatusbar) {
+    .run(function ($ionicPlatform, $cordovaStatusbar) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -41,21 +41,21 @@ angular.module('stereoSurf', ['ionic',
                 url: "/app",
                 abstract: true,
                 templateUrl: "templates/menu.html",
-                controller: 'AppCtrl'
+                controller: 'MainViewCtrl'
             })
 
-            .state('app.event-overview', {
-                url: "/event",
-
-                views: {
-                    'menuContent': {
-                        templateUrl: "templates/event-overview.html",
-                        controller: 'AppCtrl'
-
-                    }
-                }
-            })
-
+            //.state('app.event-overview', {
+            //    url: "/event",
+            //
+            //    views: {
+            //        'menuContent': {
+            //            templateUrl: "templates/event-overview.html",
+            //            controller: 'AppCtrl'
+            //
+            //        }
+            //    }
+            //})
+            //
 
 
             .state('app.event-drilldown', {
@@ -70,4 +70,10 @@ angular.module('stereoSurf', ['ionic',
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/event');
-    });
+    })
+
+    .controller('MainViewCtrl', ['$scope', function ($scope) {
+
+
+
+    }]);

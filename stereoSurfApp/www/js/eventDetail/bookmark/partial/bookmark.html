@@ -1,0 +1,37 @@
+<ion-modal-view>
+    <ion-header-bar class="bar-royal">
+        <button class="button button-clear" ng-click="closeNewBookmark()">Cancel</button>
+        <h1 class="title">New Bookmark</h1>
+        <button class="button button-clear">Save</button>
+    </ion-header-bar>
+    <ion-content>
+
+        <div class="card">
+            <div class="item item-icon-left positive">
+                <i class="icon ion-ios-timer-outline"></i>
+                <h2>Time: {{videoApi.currentTime | date:'mm:ss'}} /
+                    {{videoApi.totalTime | date:'mm:ss'}}</h2>
+                <p>More metadata</p>
+            </div>
+            <div class="item item-body">
+                <ion-scroll class="micro-thumb" direction="xy" zooming="true" has-bouncing="true">
+                    <img ng-src="../img/keyframe.png">
+                </ion-scroll>
+            </div>
+
+        </div>
+
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Event Name</span>
+                <input type="text" placeholder="Short name for event">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Comments</span>
+
+                <textarea placeholder="Notable observations..."></textarea>
+            </label>
+        </div>
+    </ion-content>
+</ion-modal-view>

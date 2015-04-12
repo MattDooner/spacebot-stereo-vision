@@ -19,6 +19,8 @@ $royal:                           #886aea !default;
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 $dark:                            #546e7a !default;
+$royal:                           #90a4ae !default;
+
 
 // Include all of Ionic
 @import "../www/lib/ionic/scss/_mixins";
@@ -101,4 +103,10 @@ $dark:                            #546e7a !default;
   margin-top: 480px;
   width: 75px;
 height: 75px;
+}
+
+
+.micro-thumb{
+
+  height: 200px;
 }
