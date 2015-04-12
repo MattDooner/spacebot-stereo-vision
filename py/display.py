@@ -36,17 +36,33 @@ def arrangePairs(img1, img2):
 
     return out
 
+def minMaxMatchDist(disparities) :
+    if len(disparities) > 0 :
+        minMatchDist = min(disparities, key = lambda d : d['match'].distance)
+        maxMatchDist = max(disparities, key = lambda d : d['match'].distance)
+        return minMatchDist, maxMatchDist
+    return None, None
+
 def drawDisparity(matchDict):
 
     m = utils.Bunch(matchDict)
 
     out = arrangePairs(m.left, m.right)
+    rows1 = m.left.shape[0]
     cols1 = m.left.shape[1]
 
     if len(m.matchDisparities) == 0:
     	return out
 
-    colormap = ColorMap((0,255,0),(0,0,255),m.minDisparity['disp'],m.maxDisparity['disp'])
+    minMatchDist, maxMatchDist = minMaxMatchDist(m.matchDisparities)
+    minMatchDist = minMatchDist["match"].distance
+    maxMatchDist = maxMatchDist["match"].distance
+
+    # colormap = ColorMap((0,255,0),(0,0,255),m.minDisparity['disp'],m.maxDisparity['disp'])
+    colormap = ColorMap((0,255,0),(0,0,255),minMatchDist,maxMatchDist)
+
+    cv2.putText(out, "%.2f" % (minMatchDist), (1,rows1-20), cv2.FONT_HERSHEY_PLAIN, 1.5, (0,255,0), 2)
+    cv2.putText(out, "%.2f" % (maxMatchDist), (1,rows1-2), cv2.FONT_HERSHEY_PLAIN, 1.5, (0,0,255), 2)
 
     # For each pair of points we have between both images
     # draw circles, then connect a line between them
@@ -71,8 +87,8 @@ def drawDisparity(matchDict):
         # colour blue
         # thickness = 1
         # print 'd: %.2f dx: %.2f dy: %.2f' % (d,dx,dy)
-        color = colormap[d]
-        cv2.putText(out, str(round(dx)), (int(x1),int(y1)), cv2.FONT_HERSHEY_PLAIN, 1, color)
+        color = colormap[mat.distance]
+        # cv2.putText(out, "%.2f" % mat.distance, (int(x1),int(y1)-1), cv2.FONT_HERSHEY_PLAIN, 1, color)
         #cv2.circle(out, (int(x1),int(y1)), 4, color, 1)   
         cv2.circle(out, (int(x2)+cols1,int(y2)), 4, color, 1)
 
@@ -147,6 +163,8 @@ class ColorMap:
     def __init__(self, startcolor, endcolor, startmap, endmap):
         self.startcolor = np.array(startcolor)
         self.endcolor = np.array(endcolor)
+        print startmap
+        print endmap
         self.startmap = float(startmap)
         self.endmap = float(endmap)
         if abs(self.startmap - self.endmap) < 0.00001:

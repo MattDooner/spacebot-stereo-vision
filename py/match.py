@@ -27,8 +27,8 @@ def match(left, right) :
     return matchDict
 
 def filterDisparities(disparities):
-    disparities = filter(lambda x: x['disp'] > 140, disparities)
-    disparities = filter(lambda disp: disp['disp'] < 170, disparities)
+    disparities = filter(lambda x: x['disp'] > 100, disparities)
+    disparities = filter(lambda disp: disp['disp'] < 180, disparities)
     disparities = filter(lambda disp: abs(disp['dy']) < 1, disparities)
     disparities = filter(lambda disp: abs(disp['dy']) > -1, disparities)
     return disparities

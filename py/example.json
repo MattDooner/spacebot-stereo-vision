@@ -7,14 +7,12 @@
 			"timestamp":0.0,
 			"numMatches":5,
 			"totalMatches":5,
-			"stats":{
+			"matchDistanceStats":{
 				"min":0,
 				"max":1,
 				"mean":0.5,
 				"stdev":0.1
 			},
-			"minMatchDistance":0.1,
-			"maxMatchDistance":0.1,
 			"matches":[
 				{
 					"leftKp":{"x":1,"y":1},
