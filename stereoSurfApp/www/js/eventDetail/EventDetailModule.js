@@ -58,6 +58,15 @@ angular.module('stereoSurf.eventDetail', [])
                 // Execute action
             });
 
+            // chart stuff
+
+            $scope.$on('elementMouseover.tooltip.directive', function(angularEvent, event) {
+                console.log('Element mouseover! ');
+                console.log(angularEvent)
+                console.log(event)
+                $scope.videoApi.seekTime(event.point.x, false);
+            });
+
             $scope.xAxisTickFormatFunction = function(value) {
                 var out = ''+value;
                 if(out.length > 4) {
@@ -148,8 +157,8 @@ angular.module('stereoSurf.eventDetail', [])
 
 
             function pauseVideo() {
-
                 $scope.videoApi.pause();
+                $scope.oldCurrentTime = $scope.videoApi.currentTime / 1000;
             }
 
 
