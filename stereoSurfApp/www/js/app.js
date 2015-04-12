@@ -44,19 +44,6 @@ angular.module('stereoSurf', ['ionic',
                 controller: 'MainViewCtrl'
             })
 
-            //.state('app.event-overview', {
-            //    url: "/event",
-            //
-            //    views: {
-            //        'menuContent': {
-            //            templateUrl: "templates/event-overview.html",
-            //            controller: 'AppCtrl'
-            //
-            //        }
-            //    }
-            //})
-            //
-
 
             .state('app.event-drilldown', {
                 url: "/event/:eventId/drilldown",
@@ -72,8 +59,10 @@ angular.module('stereoSurf', ['ionic',
         $urlRouterProvider.otherwise('/app/event');
     })
 
-    .controller('MainViewCtrl', ['$scope', function ($scope) {
+    .controller('MainViewCtrl', ['$scope','EventsService', function ($scope,EventsService) {
 
+
+        $scope.events = EventsService.events;
 
 
     }]);

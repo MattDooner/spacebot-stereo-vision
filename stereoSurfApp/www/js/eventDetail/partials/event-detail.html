@@ -1,4 +1,4 @@
-<ion-view view-title="Event">
+<ion-view view-title="Stereo Video Analysis">
 
     <ion-nav-buttons side="secondary">
         <button class="button button-icon icon ion-ios-flask-outline"></button>
@@ -17,13 +17,10 @@
                         </vg-media>
 
                         <vg-controls>
-                            <!--<vg-play-pause-button></vg-play-pause-button>-->
 
                             <vg-scrub-bar>
                                 <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                             </vg-scrub-bar>
-                            <!--<vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>-->
-                            <!--<vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>-->
 
                             <vg-fullscreen-button></vg-fullscreen-button>
                         </vg-controls>
@@ -41,6 +38,7 @@
 
                     </div>
                     <div class="list card list-inset">
+
                         <a class="item item-icon-left item-icon-right" ng-click="toggleAnalyseMode()">
                             <i class="icon ion-ios-play" ng-if="videoApi.currentState ==='stop'"></i>
                             <i class="icon ion-ios-eye" ng-if="videoApi.currentState ==='play'"></i>
@@ -83,8 +81,8 @@
                     <div class="list card list-inset">
 
 
-                        <a  ng-class="{'disabled-overlay': videoApi.currentState ==='play' || videoApi.currentState ==='stop'}" class="item item-icon-left item-icon-right"
-                                ng-click="newBookmark()">
+                        <a ng-class="{'disabled-overlay': videoApi.currentState ==='play' || videoApi.currentState ==='stop'}" class="item item-icon-left item-icon-right"
+                                ng-click="showBookmarkDialog()">
                             <i class="icon ion-ios-bookmarks"></i>
                             +Bookmark
                             <i class="icon ion-chevron-right icon-accessory"></i>

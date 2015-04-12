@@ -24,11 +24,17 @@ angular.module('stereoSurf.eventDetail', [])
         '$ionicModal',
         '$sce',
         '$stateParams',
-        function ($scope, $ionicModal, $sce, $stateParams) {
+        'EventsService',
+        '$timeout',
+        function ($scope, $ionicModal, $sce, $stateParams, EventsService,$timeout) {
 
             // init state
             var detailState = {currentTab: "quality", isAnalyseMode: "false"};
+
+            var newBookmarkState = {};
+
             $scope.detailState = detailState;
+            $scope.newBookmarkState = newBookmarkState;
             $scope.exampleData = createExampleChartData();
             $scope.videoConfig = createVideoConfig();
             $scope.currentEventId = $stateParams.eventId;
@@ -42,8 +48,9 @@ angular.module('stereoSurf.eventDetail', [])
             $scope.playVideo = playVideo;
             $scope.incrementVideoByOne = incrementVideoByOne;
             $scope.decrementVideoByOne = decrementVideoByOne;
-            $scope.newBookmark = newBookmark;
+            $scope.showBookmarkDialog = showBookmarkDialog;
             $scope.closeNewBookmark = closeNewBookmark;
+            $scope.persistNewBookmark = persistNewBookmark;
 
             //events
             $scope.$on('$destroy', function () {
@@ -51,13 +58,31 @@ angular.module('stereoSurf.eventDetail', [])
             });
             // Execute action on hide modal
             $scope.$on('modal.hidden', function () {
-                // Execute action
+
+                $scope.newBookmarkState = {};
             });
             // Execute action on remove modal
             $scope.$on('modal.removed', function () {
                 // Execute action
             });
 
+
+            function persistNewBookmark() {
+
+
+                var eventToPersist =
+                {
+                    eventId: EventsService.getNextId(),
+                    currentTime: $scope.videoApi.currentTime /1000,
+                    notes: $scope.newBookmarkState.eventNotes,
+                    eventName: $scope.newBookmarkState.eventName,
+                    hidden: false
+                };
+
+                EventsService.addEvent(eventToPersist);
+                closeNewBookmark();
+
+            }
 
             function createVideoConfig() {
 
@@ -264,9 +289,34 @@ angular.module('stereoSurf.eventDetail', [])
             }
 
 
-            function newBookmark() {
+            function setStateFromBookmark() {
 
-                $scope.modal.show();
+                var bookmark = EventsService.getEventById($scope.currentEventId);
+
+                if (bookmark && !bookmark.hidden) {
+
+                    $scope.videoApi.seekTime(bookmark.currentTime);
+
+
+                    $timeout(function(){
+
+                        $scope.videoApi.pause();
+
+                    })
+
+                }
+
+
+            }
+
+            function showBookmarkDialog() {
+
+
+                if (!($scope.videoApi.currentState === 'play' || $scope.videoApi.currentState === 'stop')) {
+
+                    $scope.modal.show();
+
+                }
             }
 
             function closeNewBookmark() {
@@ -298,8 +348,11 @@ angular.module('stereoSurf.eventDetail', [])
 
 
             function onPlayerReady(API) {
-                console.log(API);
                 $scope.videoApi = API;
+
+
+                // do this after player ready as it needs api access to seek to bookmark
+                setStateFromBookmark();
 
             }
 

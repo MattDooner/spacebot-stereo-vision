@@ -2,7 +2,7 @@
     <ion-header-bar class="bar-royal">
         <button class="button button-clear" ng-click="closeNewBookmark()">Cancel</button>
         <h1 class="title">New Bookmark</h1>
-        <button class="button button-clear">Save</button>
+        <button class="button button-clear" ng-click="persistNewBookmark()">Save</button>
     </ion-header-bar>
     <ion-content>
 
@@ -24,13 +24,13 @@
         <div class="list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Event Name</span>
-                <input type="text" placeholder="Short name for event">
+                <input ng-model="newBookmarkState.eventName" type="text" placeholder="Short name for event">
             </label>
 
             <label class="item item-input">
                 <span class="input-label">Comments</span>
 
-                <textarea placeholder="Notable observations..."></textarea>
+                <textarea ng-model="newBookmarkState.eventNotes" placeholder="Notable observations..."></textarea>
             </label>
         </div>
     </ion-content>

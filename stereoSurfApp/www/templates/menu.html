@@ -12,16 +12,21 @@
   <ion-side-menu expose-aside-when="large" side="left">
 
     <ion-content>
+      <button ui-sref="app.event({eventId: 1})" class="button button-full icon-left ion-ios-plus-outline button-dark">Begin</button>
       <ion-list>
-        <ion-item nav-clear menu-close ui-sref="app.event({eventId: 1})">
-          Event 1
+        <ion-item ng-repeat="bookmark in events" ng-if="!bookmark.hidden" class="item-icon-right" nav-clear menu-close ui-sref="app.event({eventId: bookmark.eventId})">
+          {{bookmark.eventName}}
+          <i class="icon ion-chevron-right icon-accessory"></i>
         </ion-item>
-        <ion-item nav-clear menu-close ui-sref="app.event({eventId: 2})">
-          Event 2
-        </ion-item>
-        <ion-item nav-clear menu-close ui-sref="app.event({eventId: 3})">
-          Event 3
-        </ion-item>
+        <!--<ion-item class="item-icon-right" nav-clear menu-close ui-sref="app.event({eventId: 3})">-->
+          <!--Event 2-->
+          <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+        <!--</ion-item>-->
+        <!--<ion-item class="item-icon-right" nav-clear menu-close ui-sref="app.event({eventId: 4})">-->
+          <!--Event 3-->
+          <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+
+        <!--</ion-item>-->
       </ion-list>
     </ion-content>
   </ion-side-menu>
