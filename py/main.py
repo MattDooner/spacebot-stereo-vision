@@ -6,6 +6,19 @@ import match as m
 import utils
 import json
 
+def convertToChartStruct(fmt) :
+    out = {'key':'Match Quality'}
+    values = []
+    for item in fmt['data'] :
+        value = {
+            'x': item['timestamp'] / 1000,
+            'y': item['matchDistanceStats']['mean'],
+            'size': item['matchDistanceStats']['stdev']
+        }
+        values.append(value)
+    out['values'] = values
+    return out
+
 def formatMatchPoints(matchDict) :
     mps = matchDict['matchDisparities']
     out = [0] * len(mps)
@@ -58,7 +71,9 @@ fourcc = int(cap.get(cv.CV_CAP_PROP_FOURCC))
 fourcc = cv2.cv.CV_FOURCC(*'DIVX')
 outVid = cv2.VideoWriter('data/output.avi',fourcc,int(fps),(int(frameWidth),int(frameHeight)),True)
 
-while(cap.isOpened()):
+pos_msec = cap.get(cv.CV_CAP_PROP_POS_MSEC)
+
+while(cap.isOpened() and pos_msec < 30*1000):
     ret, frame = cap.read()
 
     if(not ret):
@@ -84,7 +99,7 @@ while(cap.isOpened()):
     mobj = utils.Bunch(match)
 
     img3 = d.drawDisparity(match)
-    img3 = cv2.flip(img3,0)
+    # img3 = cv2.flip(img3,0)
     outVid.write(img3)
 
     numMatches = len(mobj.matchDisparities)
@@ -114,7 +129,7 @@ while(cap.isOpened()):
         if cv2.waitKey(0) & 0xFF == ord('q'):
             break
 
-    print "Frame %d / %d" % (count,total_frames)
+    print "Frame %d / %d (%.2f)" % (count,total_frames,pos_msec/1000)
 
 cap.release()
 outVid.release()
@@ -133,6 +148,19 @@ myjson = json.dumps(out, sort_keys=True,indent=4,separators=(',',': '))
 
 txt = open("data/output.pretty.json", "w")
 txt.write(myjson)
+txt.close()
+
+chartout = convertToChartStruct(out)
+chartjson = json.dumps(chartout)
+
+txt = open("data/chart.json", "w")
+txt.write(chartjson)
+txt.close()
+
+chartjson = json.dumps(chartout, sort_keys=True,indent=4,separators=(',',': '))
+
+txt = open("data/chart.pretty.json", "w")
+txt.write(chartjson)
 txt.close()
 
 cap.release()
