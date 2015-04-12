@@ -180,6 +180,7 @@ angular.module('stereoSurf.eventDetail', [])
 
                 var currentTime = $scope.videoApi.currentTime / 1000;
                 $scope.videoApi.seekTime(currentTime + 1, false);
+                $scope.exampleData = createExampleChartData();
             }
 
             function decrementVideoByOne() {
@@ -187,6 +188,7 @@ angular.module('stereoSurf.eventDetail', [])
 
                 var currentTime = $scope.videoApi.currentTime / 1000;
                 $scope.videoApi.seekTime(currentTime - 1, false);
+                $scope.exampleData = createExampleChartData();
 
             }
 
