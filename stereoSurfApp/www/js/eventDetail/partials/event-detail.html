@@ -154,45 +154,23 @@
 
                         <!--</div>-->
                     </div>
-
                 </ion-content>
-
-
             </div>
+
             <div class="col">
-
-
             </div>
         </div>
+        
         <div ng-if="detailState.currentTab==='quality'">
-
             <ion-content class="below padding" scroll="false" has-bouncing="true">
-
                 <div class="row">
-
                     <div class="col-80 col-offset-10">
-
-                <nvd3-scatter-chart
-                        class="quality-chart"
-                        data="exampleData"
-                        id="eventChart{{currentEventId}}"
-                        height="450"
-                        width="850"
-                        interactive="true"
-                        tooltips="true"
-                        xAxisTickFormat="xAxisTickFormatFunction">
-                    <svg></svg>
-                </nvd3-scatter-chart>
+                        <nvd3 options="nvd3Options" data="exampleData" events="nvd3Events"></nvd3>
+                    </div>
                 </div>
-
-
-                </div>
-
-
             </ion-content>
-
-
         </div>
+
     </div>
 
     <div class="pending-analysis">

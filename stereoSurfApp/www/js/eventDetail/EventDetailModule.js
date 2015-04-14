@@ -1,4 +1,4 @@
-angular.module('stereoSurf.eventDetail', [])
+angular.module('stereoSurf.eventDetail', ["nvd3"])
 
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -52,15 +52,55 @@ angular.module('stereoSurf.eventDetail', [])
             $scope.persistNewBookmark = persistNewBookmark;
 
 
+            var nvd3TooltipFormat = d3.format(',.4f');
+
+            // chart
+            $scope.nvd3Options = {
+                chart: {
+                    type: "scatterChart",
+                    height: "450",
+                    width: "850",
+                    
+                    tooltipContent: function(key, xlab, ylab, data) {
+                        var fmt = nvd3TooltipFormat;
+                        return 'μ='+fmt(data.point.y)+'<br>σ='+fmt(data.point.size);
+                    },
+                    
+                    xAxis: {
+                        "axisLabel": "Time (sec)",
+                        tickFormat: function(d) {
+                            return d3.format(',.1f')(d);
+                        }
+                    },
+                    
+                    yAxis : {
+                        "axisLabel": "Mean Match Error",
+                        tickFormat: function(d) {
+                            return d3.format(',.2f')(d);
+                        }
+                    },
+                    
+                    dispatch: {
+                        tooltipShow : function(e) {
+                            $scope.videoApi.seekTime(e.point.x, false);
+                        }
+                    },
+
+                    // TODO: set max and min from the dataset
+                    forceY : [0,.5]
+                }
+            }
+
             //events
             $scope.$on('$destroy', function () {
                 $scope.modal.remove();
             });
+
             // Execute action on hide modal
             $scope.$on('modal.hidden', function () {
-
                 $scope.newBookmarkState = {};
             });
+            
             // Execute action on remove modal
             $scope.$on('modal.removed', function () {
                 // Execute action
@@ -69,7 +109,6 @@ angular.module('stereoSurf.eventDetail', [])
             // chart stuff
 
             function persistNewBookmark() {
-
 
                 var eventToPersist =
                 {
@@ -91,14 +130,6 @@ angular.module('stereoSurf.eventDetail', [])
                 console.log(event)
                 $scope.videoApi.seekTime(event.point.x, false);
             });
-
-            $scope.xAxisTickFormatFunction = function(value) {
-                var out = ''+value;
-                if(out.length > 4) {
-                    out = out.substr(0,4);
-                }
-                return out;
-            }
             
             function createVideoConfig() {
 
@@ -109,19 +140,7 @@ angular.module('stereoSurf.eventDetail', [])
                             type: "video/mp4"
                         }
                     ],
-                    tracks: [
-                        {
-                            src: "http://www.videogular.com/assets/subs/pale-blue-dot.vtt",
-                            kind: "subtitles",
-                            srclang: "en",
-                            label: "English",
-                            default: ""
-                        }
-                    ],
-                    theme: "lib/videogular-themes-default/videogular.css",
-                    plugins: {
-                        poster: "http://www.videogular.com/assets/images/videogular.png"
-                    }
+                    theme: "lib/videogular-themes-default/videogular.css"
                 };
 
                 return videoConfig;

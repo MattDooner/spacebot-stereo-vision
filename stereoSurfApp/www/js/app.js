@@ -12,8 +12,7 @@ angular.module('stereoSurf', ['ionic',
     "com.2fdevs.videogular.plugins.controls",
     "com.2fdevs.videogular.plugins.overlayplay",
     "com.2fdevs.videogular.plugins.poster",
-    "ngSanitize",
-    "nvd3ChartDirectives"
+    "ngSanitize"
 ])
 
     .run(function ($ionicPlatform, $cordovaStatusbar) {
