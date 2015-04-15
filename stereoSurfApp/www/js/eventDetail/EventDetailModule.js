@@ -26,7 +26,9 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
         '$stateParams',
         'EventsService',
         '$timeout',
-        function ($scope, $ionicModal, $sce, $stateParams,EventsService,$timeout) {
+        '$rootScope',
+        '$ionicScrollDelegate',
+        function ($scope, $ionicModal, $sce, $stateParams, EventsService, $timeout, $rootScope,$ionicScrollDelegate) {
 
             // init state
             var detailState = {currentTab: "quality", isAnalyseMode: "false"};
@@ -50,6 +52,8 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
             $scope.showBookmarkDialog = showBookmarkDialog;
             $scope.closeNewBookmark = closeNewBookmark;
             $scope.persistNewBookmark = persistNewBookmark;
+            $scope.prepareBookmarkVideoView = prepareBookmarkVideoView;
+            $scope.updatePositionRecord = updatePositionRecord;
 
 
             var nvd3TooltipFormat = d3.format(',.4f');
@@ -58,36 +62,36 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
             $scope.nvd3Options = {
                 chart: {
                     type: "scatterChart",
-                    height: "450",
-                    width: "850",
-                    
-                    tooltipContent: function(key, xlab, ylab, data) {
+                    height: "300",
+                    width: "800",
+
+                    tooltipContent: function (key, xlab, ylab, data) {
                         var fmt = nvd3TooltipFormat;
-                        return 'μ='+fmt(data.point.y)+'<br>σ='+fmt(data.point.size);
+                        return 'μ=' + fmt(data.point.y) + '<br>σ=' + fmt(data.point.size);
                     },
-                    
+
                     xAxis: {
                         "axisLabel": "Time (sec)",
-                        tickFormat: function(d) {
+                        tickFormat: function (d) {
                             return d3.format(',.1f')(d);
                         }
                     },
-                    
-                    yAxis : {
+
+                    yAxis: {
                         "axisLabel": "Mean Match Error",
-                        tickFormat: function(d) {
+                        tickFormat: function (d) {
                             return d3.format(',.2f')(d);
                         }
                     },
-                    
+
                     dispatch: {
-                        tooltipShow : function(e) {
+                        tooltipShow: function (e) {
                             $scope.videoApi.seekTime(e.point.x, false);
                         }
                     },
 
                     // TODO: set max and min from the dataset
-                    forceY : [0,.5]
+                    forceY: [0, .5]
                 }
             }
 
@@ -100,11 +104,19 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
             $scope.$on('modal.hidden', function () {
                 $scope.newBookmarkState = {};
             });
-            
+
             // Execute action on remove modal
             $scope.$on('modal.removed', function () {
                 // Execute action
             });
+
+            $rootScope.$on('$stateChangeSuccess',
+                function (event, toState, toParams, fromState, fromParams) {
+
+                    console.log("updating from bookmark");
+                    setStateFromBookmark();
+
+                });
 
             // chart stuff
 
@@ -113,7 +125,7 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
                 var eventToPersist =
                 {
                     eventId: EventsService.getNextId(),
-                    currentTime: $scope.videoApi.currentTime /1000,
+                    currentTime: $scope.videoApi.currentTime / 1000,
                     notes: $scope.newBookmarkState.eventNotes,
                     eventName: $scope.newBookmarkState.eventName,
                     hidden: false
@@ -124,19 +136,19 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
 
             }
 
-            $scope.$on('elementMouseover.tooltip.directive', function(angularEvent, event) {
+            $scope.$on('elementMouseover.tooltip.directive', function (angularEvent, event) {
                 console.log('Element mouseover! ');
-                console.log(angularEvent)
-                console.log(event)
+                console.log(angularEvent);
+                console.log(event);
                 $scope.videoApi.seekTime(event.point.x, false);
             });
-            
+
             function createVideoConfig() {
 
                 var videoConfig = {
                     sources: [
                         {
-                            src: $sce.trustAsResourceUrl("/img/output.mp4"),
+                            src: $sce.trustAsResourceUrl("img/output.mp4"),
                             type: "video/mp4"
                         }
                     ],
@@ -151,7 +163,7 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
                 var exampleChartData = JSON.parse(JSON.stringify(myChartData));
 
                 var currentTime = 0;
-                if($scope.videoApi)
+                if ($scope.videoApi)
                     currentTime = $scope.videoApi.currentTime / 1000;
 
                 var values = exampleChartData.values;
@@ -160,9 +172,9 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
                 var minTime = currentTime - 1;
                 var maxTime = currentTime + 1;
 
-                for(var i = 0; i < values.length; i++) {
+                for (var i = 0; i < values.length; i++) {
                     var value = values[i];
-                    if(value.x >= minTime && value.x <= maxTime) {
+                    if (value.x >= minTime && value.x <= maxTime) {
                         newValues.push(value);
                     }
                 }
@@ -175,25 +187,17 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
 
             function setStateFromBookmark() {
 
-                console.log(EventsService);
                 var bookmark = EventsService.getEventById($scope.currentEventId);
 
                 if (bookmark && !bookmark.hidden) {
 
-                    $scope.videoApi.seekTime(bookmark.currentTime);
-
-
-                    $timeout(function(){
+                    $timeout(function () {
 
                         $scope.videoApi.pause();
+                        $scope.videoApi.seekTime(bookmark.currentTime);
                         $scope.exampleData = createExampleChartData();
-
-
                     })
-
                 }
-
-
             }
 
             function showBookmarkDialog() {
@@ -203,7 +207,32 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
 
                     $scope.modal.show();
 
+                    $timeout(function(){
+
+                        var bookmark = EventsService.getEventById($scope.currentEventId);
+                        var bookmarkVideoSnapshotHandle = $ionicScrollDelegate.$getByHandle('bookmark-preview-scroll');
+
+                        if (bookmark && bookmark.hidden) {
+
+                            bookmarkVideoSnapshotHandle.zoomTo(1.25,false);
+                            bookmarkVideoSnapshotHandle.scrollTo(90,90,false);
+
+                        }
+
+                        $scope.currentBookmarkVidScrollPos =  bookmarkVideoSnapshotHandle.getScrollPosition();
+                        var currentTime = $scope.videoApi.currentTime / 1000;
+                        $scope.currentActiveBookmarkVideoApi.seekTime(currentTime, false);
+
+                    })
+
                 }
+            }
+
+            function updatePositionRecord(){
+
+                $timeout(function() {
+                    $scope.currentBookmarkVidScrollPos = $ionicScrollDelegate.$getByHandle('bookmark-preview-scroll').getScrollPosition();
+                });
             }
 
             function closeNewBookmark() {
@@ -237,7 +266,7 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
             function onPlayerReady(API) {
 
                 $scope.videoApi = API;
-                
+
                 // do this after player ready as it needs api access to seek to bookmark
                 setStateFromBookmark();
 
@@ -282,6 +311,12 @@ angular.module('stereoSurf.eventDetail', ["nvd3"])
                 detailState.currentTab = viewName;
             }
 
+
+            function prepareBookmarkVideoView($API){
+
+                $scope.currentActiveBookmarkVideoApi = $API;
+
+            }
 
         }]);
 

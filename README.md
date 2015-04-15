@@ -26,7 +26,7 @@ cd py/
 python main.py
 ```
 
-## `stereoSurfApp/` Web Applicate / Data Dashboard
+## `stereoSurfApp/` Web Application / Data Dashboard
 
 The web app uses the Ionic (http://ionicframework.com/) web framework along with node, npm, and bower. You'll need to first install node.js (https://nodejs.org/)
 
@@ -39,3 +39,13 @@ bower install
 ionic setup sass
 ionic serve
 ```
+# Credits
+
+## iOS Icon resources
+
+Starry background: http://zummerfish.deviantart.com/art/Starry-textures-193667479
+Metal texture: http://www.psdgraphics.com/textures/dirty-metal-surface-texture/
+Space station vector: Icon made by Freepik from www.flaticon.com
+
+
+

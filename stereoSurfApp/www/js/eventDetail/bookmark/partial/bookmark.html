@@ -4,18 +4,27 @@
         <h1 class="title">New Bookmark</h1>
         <button class="button button-clear" ng-click="persistNewBookmark()">Save</button>
     </ion-header-bar>
-    <ion-content>
+    <ion-content id="addStepWrapper">
 
         <div class="card">
             <div class="item item-icon-left positive">
                 <i class="icon ion-ios-timer-outline"></i>
+
                 <h2>Time: {{videoApi.currentTime | date:'mm:ss'}} /
                     {{videoApi.totalTime | date:'mm:ss'}}</h2>
-                <p>More metadata</p>
+
+                <p>Point of interest: Left: {{currentBookmarkVidScrollPos.left | number:0}}, Right: {{currentBookmarkVidScrollPos.left | number:0}}, Zoom: {{currentBookmarkVidScrollPos.zoom | number:3}} </p>
             </div>
             <div class="item item-body">
-                <ion-scroll class="micro-thumb" direction="xy" zooming="true" has-bouncing="true">
-                    <img ng-src="../img/keyframe.png">
+                <ion-scroll on-scroll="updatePositionRecord()" delegate-handle="bookmark-preview-scroll" class="micro-thumb" direction="xy" zooming="true" has-bouncing="true">
+                    <!--<img ng-src="../img/keyframe.png">-->
+                    <videogular vg-player-ready="prepareBookmarkVideoView($API)" class="video-container"
+                                vg-theme="videoConfig.theme">
+                        <vg-media vg-src="videoConfig.sources"
+                                  vg-tracks="videoConfig.tracks">
+                        </vg-media>
+                    </videogular>
+
                 </ion-scroll>
             </div>
 

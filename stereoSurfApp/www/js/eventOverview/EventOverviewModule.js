@@ -17,11 +17,12 @@ angular.module('stereoSurf.eventOverview', [])
             })
     })
 
-    .controller('EventOverviewCtrl', ['$scope', function ($scope) {
+    .controller('EventOverviewCtrl', ['$scope','$cordovaSplashscreen','$ionicPlatform', function ($scope,$cordovaSplashscreen,$ionicPlatform) {
 
+        $ionicPlatform.ready(function () {
 
-
-
+            $cordovaSplashscreen.hide();
+        });
     }])
 
     .factory('EventsService', function () {

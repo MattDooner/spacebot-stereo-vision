@@ -10,7 +10,7 @@
 
             <div class="row">
 
-                <div class="col-80">
+                <div class="col-66">
                     <videogular vg-player-ready="onPlayerReady($API)" class="video-container" vg-theme="videoConfig.theme">
                         <vg-media vg-src="videoConfig.sources"
                                   vg-tracks="videoConfig.tracks">
@@ -48,7 +48,7 @@
                             <div ng-if="videoApi.currentState ==='pause'">Resume</div>
                             <div ng-if="videoApi.currentState ==='play'">Analyse</div>
                             <i ng-if="detailState.isAnalyseMode" class="icon ion-chevron-right icon-accessory"></i>
-                            <ion-spinner ng-if="!detailState.isAnalyseMode" class="icon" icon="ripple"></ion-spinner>
+                            <ion-spinner ng-if="videoApi.currentState ==='play'" class="icon" icon="ripple"></ion-spinner>
 
 
                         </a>
@@ -59,7 +59,7 @@
                             <a ng-disabled="videoApi.currentState ==='play'"
                                class="button button-icon icon ion-ios-rewind"
                                ng-click="decrementVideoByOne()"></a>
-                            +/- 1 Second
+                            +/- 1 Sec
                             <a ng-disabled="videoApi.currentState ==='play'"
                                class="button button-icon icon ion-ios-fastforward"
                                ng-click="incrementVideoByOne()"></a>
@@ -91,6 +91,7 @@
                     </div>
 
 
+
                 </div>
             </div>
 
@@ -98,13 +99,13 @@
 
 
         <!--<div class="button" ui-sref="app.event-detail({eventId:1})">State Change</div>-->
-        <div class="row row-center" ng-show="videoApi.currentState ==='pause'">
+        <div class="row row-center" ng-if="videoApi.currentState ==='pause'">
 
             <div class="col col-50 col-offset-25">
                 <div class="button-bar">
                     <!--<a class="button button-small" ui-sref="app.event-drilldown({eventId:1})">Quality</a>-->
                     <a ng-class="{'button-positive': detailState.currentTab ==='quality'}"
-                       ng-click="activateDetailView('quality')" class="button button-small">Quality</a>
+                       ng-click="activateDetailView('quality')" class="button button-small">Match Error</a>
                     <a ng-class="{'button-positive': detailState.currentTab ==='features'}"
                        ng-click="activateDetailView('features')" class="button button-small">Features</a>
                     <a ng-disabled="true" class="button button-small">3d</a>
@@ -116,7 +117,7 @@
 
     </ion-content>
 
-    <div ng-show="videoApi.currentState ==='pause'">
+    <div ng-if="videoApi.currentState ==='pause'">
 
         <div ng-show="detailState.currentTab==='features'" class="row">
 
@@ -142,17 +143,7 @@
 
                             </div>
                         </div>
-                        <!--<div class="col-50">-->
-                        <!--<ion-scroll direction="xy" zooming="true" has-bouncing="true">-->
-                        <!--<img ng-src="../img/keyframe.png">-->
-                        <!--</ion-scroll>-->
 
-                        <!--&lt;!&ndash;<ion-scroll zooming="true" min-zoom="0.5" direction="xy" style="width: 500px; height: 500px">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div style="width: 5000px; height: 5000px; background: url('https://upload.wikimedia.org/wikipedia/commons/a/ad/Europe_geological_map-en.jpg') repeat"></div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</ion-scroll>&ndash;&gt;-->
-
-
-                        <!--</div>-->
                     </div>
                 </ion-content>
             </div>
@@ -164,7 +155,7 @@
         <div ng-if="detailState.currentTab==='quality'">
             <ion-content class="below padding" scroll="false" has-bouncing="true">
                 <div class="row">
-                    <div class="col-80 col-offset-10">
+                    <div class="col">
                         <nvd3 options="nvd3Options" data="exampleData" events="nvd3Events"></nvd3>
                     </div>
                 </div>
@@ -174,11 +165,11 @@
     </div>
 
     <div class="pending-analysis">
-        <ion-spinner ng-if="!detailState.isAnalyseMode" class="icon" icon="ios">
+        <ion-spinner ng-if="videoApi.currentState ==='play'" class="icon" icon="ios">
         </ion-spinner>
 
     </div>
-    <h2 class="pending-message" ng-if="!detailState.isAnalyseMode">Awaiting Analysis Pause...</h2>
+    <h2 class="pending-message" ng-if="videoApi.currentState ==='play'">Awaiting Analysis Pause...</h2>
 
 
 
