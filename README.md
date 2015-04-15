@@ -18,7 +18,7 @@ One complication with this challenge was the lack of data available from the SPH
 
 ## `py/` OpenCV / Python Feature Matching
 
-You'll first need to install Python and OpenCV with Python bindings. Please have a look at http://www.opencv.org for details as steps vary depending on your enviornment.
+You'll first need to install Python and OpenCV with Python bindings. Please have a look at http://www.opencv.org for details as steps vary depending on your environment.
 This project was run on OpenCV 2.4.10, Python 2.7.3, and Debian 6.
 
 ```
